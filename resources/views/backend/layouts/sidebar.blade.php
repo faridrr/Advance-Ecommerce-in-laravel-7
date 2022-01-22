@@ -5,7 +5,7 @@
       <div class="sidebar-brand-icon rotate-n-15">
         <i class="fas fa-laugh-wink"></i>
       </div>
-      <div class="sidebar-brand-text mx-3">Admin</div>
+      <div class="sidebar-brand-text mx-3">Michket</div>
     </a>
 
     <!-- Divider -->
@@ -83,21 +83,6 @@
         </div>
     </li>
 
-    {{-- Brands --}}
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brandCollapse" aria-expanded="true" aria-controls="brandCollapse">
-          <i class="fas fa-table"></i>
-          <span>Brands</span>
-        </a>
-        <div id="brandCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Brand Options:</h6>
-            <a class="collapse-item" href="{{route('brand.index')}}">Brands</a>
-            <a class="collapse-item" href="{{route('brand.create')}}">Add Brand</a>
-          </div>
-        </div>
-    </li>
-
     {{-- Shipping --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#shippingCollapse" aria-expanded="true" aria-controls="shippingCollapse">
@@ -121,13 +106,8 @@
         </a>
     </li>
 
-    <!-- Reviews -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{route('review.index')}}">
-            <i class="fas fa-comments"></i>
-            <span>Reviews</span></a>
-    </li>
-    
+
+
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -182,13 +162,6 @@
         </div>
     </li>
 
-      <!-- Comments -->
-      <li class="nav-item">
-        <a class="nav-link" href="{{route('comment.index')}}">
-            <i class="fas fa-comments fa-chart-area"></i>
-            <span>Comments</span>
-        </a>
-      </li>
 
 
     <!-- Divider -->

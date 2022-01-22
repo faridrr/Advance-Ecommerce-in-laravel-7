@@ -12,13 +12,13 @@ class Helper{
     public static function messageList()
     {
         return Message::whereNull('read_at')->orderBy('created_at', 'desc')->get();
-    } 
+    }
     public static function getAllCategory(){
         $category=new Category();
         $menu=$category->getAllParentWithChild();
         return $menu;
-    } 
-    
+    }
+
     public static function getHeaderCategory(){
         $category = new Category();
         // dd($category);
@@ -26,9 +26,9 @@ class Helper{
 
         if($menu){
             ?>
-            
+
             <li>
-            <a href="javascript:void(0);">Category<i class="ti-angle-down"></i></a>
+            <a href="javascript:void(0);">Catégorie<i class="ti-angle-down"></i></a>
                 <ul class="dropdown border-0 shadow">
                 <?php
                     foreach($menu as $cat_info){
@@ -39,7 +39,9 @@ class Helper{
                                     <?php
                                     foreach($cat_info->child_cat as $sub_menu){
                                         ?>
-                                        <li><a href="<?php echo route('product-sub-cat',[$cat_info->slug,$sub_menu->slug]); ?>"><?php echo $sub_menu->title; ?></a></li>
+                                        <li>
+                                            <a href="<?php echo route('product-sub-cat',[$cat_info->slug,$sub_menu->slug]); ?>"><?php echo $sub_menu->title; ?></a>
+                                        </li>
                                         <?php
                                     }
                                     ?>
@@ -82,10 +84,9 @@ class Helper{
     }
     // Cart Count
     public static function cartCount($user_id=''){
-       
-        if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('quantity');
+
+        if(session()->token()){
+            return Cart::where('user_id',session()->token())->where('order_id',null)->sum('quantity');
         }
         else{
             return 0;
@@ -96,20 +97,20 @@ class Helper{
         return $this->hasOne('App\Models\Product','id','product_id');
     }
 
-    public static function getAllProductFromCart($user_id=''){
-        if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::with('product')->where('user_id',$user_id)->where('order_id',null)->get();
+    public static function getAllProductFromCart(){
+
+        if(session()->token()){
+
+            return Cart::with('product')->where('user_id',session()->token())->where('order_id',null)->get();
         }
         else{
             return 0;
         }
     }
     // Total amount cart
-    public static function totalCartPrice($user_id=''){
-        if(Auth::check()){
-            if($user_id=="") $user_id=auth()->user()->id;
-            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
+    public static function totalCartPrice(){
+        if(session()->token()){
+            return Cart::where('user_id',session()->token())->where('order_id',null)->sum('amount');
         }
         else{
             return 0;
@@ -117,7 +118,7 @@ class Helper{
     }
     // Wishlist Count
     public static function wishlistCount($user_id=''){
-       
+
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
             return Wishlist::where('user_id',$user_id)->where('cart_id',null)->sum('quantity');
@@ -171,7 +172,7 @@ class Helper{
     }
 
     public static function shipping(){
-        return Shipping::orderBy('id','DESC')->get();
+        return Shipping::orderBy('id','ASC')->get();
     }
 }
 

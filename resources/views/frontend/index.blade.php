@@ -1,5 +1,5 @@
 @extends('frontend.layouts.master')
-@section('title','E-SHOP || HOME PAGE')
+@section('title',"Michket || Page d'accueil")
 @section('main-content')
 <!-- Slider Area -->
 <section class="hero-slider">
@@ -43,10 +43,10 @@
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h1 class="wow fadeInDown">{{$banner->title}}</h1>
                         <p>{!! html_entity_decode($banner->description) !!}</p>
-                        <a class="btn btn-lg ws-btn wow fadeInUpBig" href="{{route('product-grids')}}" role="button">Shop Now<i class="far fa-arrow-alt-circle-right"></i></i></a>
+                        <a class="btn btn-lg ws-btn wow fadeInUpBig" href="{{route('product-grids')}}" role="button">Achetez maintenant<i class="far fa-arrow-alt-circle-right"></i></i></a>
                     </div>
-                </div>  
-            @endforeach   
+                </div>
+            @endforeach
         </div>
         <a class="carousel-control-prev" href="#Gslider" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -65,7 +65,7 @@
 <section class="small-banner section">
     <div class="container-fluid">
         <div class="row">
-            @php 
+            @php
             $category_lists=DB::table('categories')->where('status','active')->limit(3)->get();
             @endphp
             @if($category_lists)
@@ -81,7 +81,7 @@
                                 @endif
                                 <div class="content">
                                     <h3>{{$cat->title}}</h3>
-                                        <a href="{{route('product-cat',$cat->slug)}}">Discover Now</a>
+                                        <a href="{{route('product-cat',$cat->slug)}}">Découvrez Maintenant</a>
                                 </div>
                             </div>
                         </div>
@@ -100,26 +100,26 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>Trending Item</h2>
+                        <h2>Dernières Tendances</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">        
+                <div class="col-12">
                     <div class="product-info">
                         <div class="nav-main">
                             <!-- Tab Nav -->
                             <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
-                                @php 
+                                @php
                                     $categories=DB::table('categories')->where('status','active')->where('is_parent',1)->get();
                                     // dd($categories);
                                 @endphp
                                 @if($categories)
                                 <button class="btn" style="background:black"data-filter="*">
-                                    All Products
+                                    Tous les produits
                                 </button>
                                     @foreach($categories as $key=>$cat)
-                                    
+
                                     <button class="btn" style="background:none;color:black;"data-filter=".{{$cat->id}}">
                                         {{$cat->title}}
                                     </button>
@@ -136,7 +136,7 @@
                                     <div class="single-product">
                                         <div class="product-img">
                                             <a href="{{route('product-detail',$product->slug)}}">
-                                                @php 
+                                                @php
                                                     $photo=explode(',',$product->photo);
                                                 // dd($photo);
                                                 @endphp
@@ -155,14 +155,14 @@
 
                                             </a>
                                             <div class="button-head">
-                                                <div class="product-action">
-                                                    <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                    <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" ><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                                </div>
-                                                <div class="product-action-2">
-                                                    <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>
-                                                </div>
+                                            <div class="product-action">
+                                                <a title="Acheter" href="{{route('product-detail',$product->slug)}}"><i class=" ti-eye"></i><span>Achat rapide</span></a>
                                             </div>
+                                            <div class="product-action-2">
+                                                <a title="Acheter"
+                                                   href="{{route('product-detail',$product->slug)}}">Acheter</a>
+                                            </div>
+                                        </div>
                                         </div>
                                         <div class="product-content">
                                             <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
@@ -170,8 +170,8 @@
                                                 @php
                                                     $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <span>${{number_format($after_discount,2)}}</span>
-                                                <del style="padding-left:4%;">${{number_format($product->price,2)}}</del>
+                                                <span>{{number_format($after_discount,2)}} DZA</span>
+                                                <del style="padding-left:4%;">{{number_format($product->price,2)}} DZA</del>
                                             </div>
                                         </div>
                                     </div>
@@ -180,7 +180,7 @@
 
                              <!--/ End Single Tab -->
                             @endif
-                       
+
                         <!--/ End Single Tab -->
 
                         </div>
@@ -189,37 +189,7 @@
             </div>
         </div>
 </div>
-<!-- End Product Area -->
-{{-- @php
-    $featured=DB::table('products')->where('is_featured',1)->where('status','active')->orderBy('id','DESC')->limit(1)->get();
-@endphp --}}
-<!-- Start Midium Banner  -->
-<section class="midium-banner">
-    <div class="container">
-        <div class="row">
-            @if($featured)
-                @foreach($featured as $data)
-                    <!-- Single Banner  -->
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <div class="single-banner">
-                            @php 
-                                $photo=explode(',',$data->photo);
-                            @endphp
-                            <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                            <div class="content">
-                                <p>{{$data->cat_info['title']}}</p>
-                                <h3>{{$data->title}} <br>Up to<span> {{$data->discount}}%</span></h3>
-                                <a href="{{route('product-detail',$data->slug)}}">Shop Now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /End Single Banner  -->
-                @endforeach
-            @endif
-        </div>
-    </div>
-</section>
-<!-- End Midium Banner -->
+
 
 <!-- Start Most Popular -->
 <div class="product-area most-popular section">
@@ -227,7 +197,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>Hot Item</h2>
+                    <h2>Produit à la une</h2>
                 </div>
             </div>
         </div>
@@ -240,7 +210,7 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="{{route('product-detail',$product->slug)}}">
-                                    @php 
+                                    @php
                                         $photo=explode(',',$product->photo);
                                     // dd($photo);
                                     @endphp
@@ -249,23 +219,23 @@
                                     {{-- <span class="out-of-stock">Hot</span> --}}
                                 </a>
                                 <div class="button-head">
-                                    <div class="product-action">
-                                        <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                        <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" ><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-                                    </div>
-                                    <div class="product-action-2">
-                                        <a href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>
-                                    </div>
+                                <div class="product-action">
+                                    <a title="Acheter" href="{{route('product-detail',$product->slug)}}"><i class=" ti-eye"></i><span>Achat rapide</span></a>
                                 </div>
+                                <div class="product-action-2">
+                                    <a title="Acheter"
+                                       href="{{route('product-detail',$product->slug)}}">Acheter</a>
+                                </div>
+                            </div>
                             </div>
                             <div class="product-content">
                                 <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
                                 <div class="product-price">
-                                    <span class="old">${{number_format($product->price,2)}}</span>
-                                    @php 
+                                    <span class="old">{{number_format($product->price,2)}} DZA</span>
+                                    @php
                                     $after_discount=($product->price-($product->price*$product->discount)/100)
                                     @endphp
-                                    <span>${{number_format($after_discount,2)}}</span>
+                                    <span>{{number_format($after_discount,2)}} DZA</span>
                                 </div>
                             </div>
                         </div>
@@ -287,7 +257,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="shop-section-title">
-                            <h1>Latest Items</h1>
+                            <h1>Derniers articles</h1>
                         </div>
                     </div>
                 </div>
@@ -302,7 +272,7 @@
                                 <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="list-image overlay">
-                                        @php 
+                                        @php
                                             $photo=explode(',',$product->photo);
                                             // dd($photo);
                                         @endphp
@@ -313,7 +283,7 @@
                                 <div class="col-lg-6 col-md-6 col-12 no-padding">
                                     <div class="content">
                                         <h4 class="title"><a href="#">{{$product->title}}</a></h4>
-                                        <p class="price with-discount">${{number_format($product->discount,2)}}</p>
+                                        <p class="price with-discount">{{number_format($product->discount,2)}} DZA</p>
                                     </div>
                                 </div>
                                 </div>
@@ -327,51 +297,12 @@
         </div>
     </div>
 </section>
-<!-- End Shop Home List  -->
-{{-- @foreach($featured as $data)
-    <!-- Start Cowndown Area -->
-    <section class="cown-down">
-        <div class="section-inner ">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-6 col-12 padding-right">
-                        <div class="image">
-                            @php 
-                                $photo=explode(',',$data->photo);
-                                // dd($photo);
-                            @endphp
-                            <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                        </div>	
-                    </div>	
-                    <div class="col-lg-6 col-12 padding-left">
-                        <div class="content">
-                            <div class="heading-block">
-                                <p class="small-title">Deal of day</p>
-                                <h3 class="title">{{$data->title}}</h3>
-                                <p class="text">{!! html_entity_decode($data->summary) !!}</p>
-                                @php 
-                                    $after_discount=($product->price-($product->price*$product->discount)/100)
-                                @endphp
-                                <h1 class="price">${{number_format($after_discount)}} <s>${{number_format($data->price)}}</s></h1>
-                                <div class="coming-time">
-                                    <div class="clearfix" data-countdown="2021/02/30"></div>
-                                </div>
-                            </div>
-                        </div>	
-                    </div>	
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- /End Cowndown Area -->
-@endforeach --}}
-<!-- Start Shop Blog  -->
 <section class="shop-blog section">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>From Our Blog</h2>
+                    <h2>Notre Blog</h2>
                 </div>
             </div>
         </div>
@@ -385,14 +316,14 @@
                             <div class="content">
                                 <p class="date">{{$post->created_at->format('d M , Y. D')}}</p>
                                 <a href="{{route('blog.detail',$post->slug)}}" class="title">{{$post->title}}</a>
-                                <a href="{{route('blog.detail',$post->slug)}}" class="more-btn">Continue Reading</a>
+                                <a href="{{route('blog.detail',$post->slug)}}" class="more-btn">Continuer la lecture</a>
                             </div>
                         </div>
                         <!-- End Single Blog  -->
                     </div>
                 @endforeach
             @endif
-            
+
         </div>
     </div>
 </section>
@@ -443,7 +374,6 @@
 </section>
 <!-- End Shop Services Area -->
 
-@include('frontend.layouts.newsletter')
 
 <!-- Modal -->
 @if($product_lists)
@@ -460,7 +390,7 @@
                                     <!-- Product Slider -->
                                         <div class="product-gallery">
                                             <div class="quickview-slider-active">
-                                                @php 
+                                                @php
                                                     $photo=explode(',',$product->photo);
                                                 // dd($photo);
                                                 @endphp
@@ -491,7 +421,7 @@
                                                     @for($i=1; $i<=5; $i++)
                                                         @if($rate>=$i)
                                                             <i class="yellow fa fa-star"></i>
-                                                        @else 
+                                                        @else
                                                         <i class="fa fa-star"></i>
                                                         @endif
                                                     @endfor
@@ -501,7 +431,7 @@
                                             <div class="quickview-stock">
                                                 @if($product->stock >0)
                                                 <span><i class="fa fa-check-circle-o"></i> {{$product->stock}} in stock</span>
-                                                @else 
+                                                @else
                                                 <span><i class="fa fa-times-circle-o text-danger"></i> {{$product->stock}} out stock</span>
                                                 @endif
                                             </div>
@@ -519,7 +449,7 @@
                                                     <div class="col-lg-6 col-12">
                                                         <h5 class="title">Size</h5>
                                                         <select>
-                                                            @php 
+                                                            @php
                                                             $sizes=explode(',',$product->size);
                                                             // dd($sizes);
                                                             @endphp
@@ -541,7 +471,7 @@
                                             </div>
                                         @endif
                                         <form action="{{route('single-add-to-cart')}}" method="POST" class="mt-4">
-                                            @csrf 
+                                            @csrf
                                             <div class="quantity">
                                                 <!-- Input Order -->
                                                 <div class="input-group">
@@ -581,8 +511,7 @@
 @endsection
 
 @push('styles')
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5f2e5abf393162001291e431&product=inline-share-buttons' async='async'></script>
+
     <style>
         /* Banner Sliding */
         #Gslider .carousel-inner {
@@ -606,7 +535,7 @@
         font-size: 50px;
         font-weight: bold;
         line-height: 100%;
-        color: #F7941D;
+        color: #fab615;
         }
 
         #Gslider .carousel-inner .carousel-caption p {
@@ -624,68 +553,9 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
-    {{-- <script>
-        $('.cart').click(function(){
-            var quantity=1;
-            var pro_id=$(this).data('id');
-            $.ajax({
-                url:"{{route('add-to-cart')}}",
-                type:"POST",
-                data:{
-                    _token:"{{csrf_token()}}",
-                    quantity:quantity,
-                    pro_id:pro_id
-                },
-                success:function(response){
-                    console.log(response);
-					if(typeof(response)!='object'){
-						response=$.parseJSON(response);
-					}
-					if(response.status){
-						swal('success',response.msg,'success').then(function(){
-							// document.location.href=document.location.href;
-						});
-					}
-                    else{
-                        window.location.href='user/login'
-                    }
-                }
-            })
-        });
-    </script> --}}
-    {{-- <script>
-        $('.wishlist').click(function(){
-            var quantity=1;
-            var pro_id=$(this).data('id');
-            // alert(pro_id);
-            $.ajax({
-                url:"{{route('add-to-wishlist')}}",
-                type:"POST",
-                data:{
-                    _token:"{{csrf_token()}}",
-                    quantity:quantity,
-                    pro_id:pro_id,
-                },
-                success:function(response){
-                    if(typeof(response)!='object'){
-                        response=$.parseJSON(response);
-                    }
-                    if(response.status){
-                        swal('success',response.msg,'success').then(function(){
-                            document.location.href=document.location.href;
-                        });
-                    }
-                    else{
-                        swal('error',response.msg,'error').then(function(){
-							// document.location.href=document.location.href;
-						}); 
-                    }
-                }
-            });
-        });
-    </script> --}}
+
     <script>
-        
+
         /*==================================================================
         [ Isotope ]*/
         var $topeContainer = $('.isotope-grid');
@@ -697,7 +567,7 @@
                 var filterValue = $(this).attr('data-filter');
                 $topeContainer.isotope({filter: filterValue});
             });
-            
+
         });
 
         // init Isotope

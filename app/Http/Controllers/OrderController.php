@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
@@ -51,47 +52,25 @@ class OrderController extends Controller
             'address2'=>'string|nullable',
             'coupon'=>'nullable|numeric',
             'phone'=>'numeric|required',
-            'post_code'=>'string|nullable',
-            'email'=>'string|required'
         ]);
         // return $request->all();
 
-        if(empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
-            request()->session()->flash('error','Cart is Empty !');
+        if(empty(Cart::where('user_id',$request->session()->token())->where('order_id',null)->first())){
+            request()->session()->flash('error','Le panier est vide!');
             return back();
         }
-        // $cart=Cart::get();
-        // // return $cart;
-        // $cart_index='ORD-'.strtoupper(uniqid());
-        // $sub_total=0;
-        // foreach($cart as $cart_item){
-        //     $sub_total+=$cart_item['amount'];
-        //     $data=array(
-        //         'cart_id'=>$cart_index,
-        //         'user_id'=>$request->user()->id,
-        //         'product_id'=>$cart_item['id'],
-        //         'quantity'=>$cart_item['quantity'],
-        //         'amount'=>$cart_item['amount'],
-        //         'status'=>'new',
-        //         'price'=>$cart_item['price'],
-        //     );
+        $session = $request->session()->token();
 
-        //     $cart=new Cart();
-        //     $cart->fill($data);
-        //     $cart->save();
-        // }
-
-        // $total_prod=0;
-        // if(session('cart')){
-        //         foreach(session('cart') as $cart_items){
-        //             $total_prod+=$cart_items['quantity'];
-        //         }
-        // }
 
         $order=new Order();
-        $order_data=$request->all();
-        $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
-        $order_data['user_id']=$request->user()->id;
+
+
+        $last_id = Order::whereMonth('created_at', Carbon::now()->month)->latest()->count();
+        $last_id =  $last_id == 0 ? 1 : $last_id + 1;
+        $order_data= $request->all();
+        $order_data['order_number']= Carbon::now()->format('m'). '-' . str_pad($last_id, 4, '0', STR_PAD_LEFT);
+
+        $order_data['user_id']= $session;
         $order_data['shipping_id']=$request->shipping;
         $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
         // return session('coupon')['value'];
@@ -117,7 +96,8 @@ class OrderController extends Controller
             }
         }
         // return $order_data['total_amount'];
-        $order_data['status']="new";
+        $order_data['status']="Commande";
+
         if(request('payment_method')=='paypal'){
             $order_data['payment_method']='paypal';
             $order_data['payment_status']='paid';
@@ -144,10 +124,10 @@ class OrderController extends Controller
             session()->forget('cart');
             session()->forget('coupon');
         }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
+        Cart::where('user_id', $request->session()->token())->where('order_id', null)->update(['order_id' => $order->id]);
 
-        // dd($users);        
-        request()->session()->flash('success','Your product successfully placed in order');
+        // dd($users);
+            request()->session()->flash('success','Votre commande passée avec succès');
         return redirect()->route('home');
     }
 
@@ -187,7 +167,7 @@ class OrderController extends Controller
     {
         $order=Order::find($id);
         $this->validate($request,[
-            'status'=>'required|in:new,process,delivered,cancel'
+            'status'=>'required'
         ]);
         $data=$request->all();
         // return $request->status;
@@ -250,17 +230,17 @@ class OrderController extends Controller
             elseif($order->status=="process"){
                 request()->session()->flash('success','Your order is under processing please wait.');
                 return redirect()->route('home');
-    
+
             }
             elseif($order->status=="delivered"){
                 request()->session()->flash('success','Your order is successfully delivered.');
                 return redirect()->route('home');
-    
+
             }
             else{
                 request()->session()->flash('error','Your order canceled. please try again');
                 return redirect()->route('home');
-    
+
             }
         }
         else{

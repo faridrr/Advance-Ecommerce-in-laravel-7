@@ -6,7 +6,7 @@
     <h5 class="card-header">Edit Product</h5>
     <div class="card-body">
       <form method="post" action="{{route('product.update',$product->id)}}">
-        @csrf 
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
@@ -35,7 +35,7 @@
 
         <div class="form-group">
           <label for="is_featured">Is Featured</label><br>
-          <input type="checkbox" name='is_featured' id='is_featured' value='{{$product->is_featured}}' {{(($product->is_featured) ? 'checked' : '')}}> Yes                        
+          <input type="checkbox" name='is_featured' id='is_featured' value='{{$product->is_featured}}' {{(($product->is_featured) ? 'checked' : '')}}> Yes
         </div>
               {{-- {{$categories}} --}}
 
@@ -43,24 +43,37 @@
           <label for="cat_id">Category <span class="text-danger">*</span></label>
           <select name="cat_id" id="cat_id" class="form-control">
               <option value="">--Select any category--</option>
-              @foreach($categories as $key=>$cat_data)
-                  <option value='{{$cat_data->id}}' {{(($product->cat_id==$cat_data->id)? 'selected' : '')}}>{{$cat_data->title}}</option>
+              @foreach($categories as $key=>$parent_cat)
+                  <option value='{{$parent_cat->id}}'>{{$parent_cat->title}}</option>
+                  @php
+                      $child_cats = App\Models\Category::where('parent_id', $parent_cat->id)->orderBy('title','ASC')->get();
+                  @endphp
+                  @foreach($child_cats as $i =>$child_cat)
+                      <option value='{{$child_cat->id}}'>  - {{$child_cat->title}}</option>
+
+                      @php
+                          $child_cats2 = App\Models\Category::where('parent_id', $child_cat->id)->orderBy('title','ASC')->get();
+                      @endphp
+                      @foreach($child_cats2 as $child_cat2)
+                          <option value='{{$child_cat2->id}}'>     - {{$child_cat2->title}}</option>
+                          @php
+                              $child_cats3 = App\Models\Category::where('parent_id', $child_cat2->id)->orderBy('title','ASC')->get();
+                          @endphp
+                          @foreach($child_cats3 as $child_cat3)
+                              <option value='{{$child_cat3->id}}'>        - {{$child_cat3->title}}</option>
+                          @endforeach
+
+                      @endforeach
+                  @endforeach
               @endforeach
           </select>
         </div>
-        @php 
+        @php
           $sub_cat_info=DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
         // dd($sub_cat_info);
 
         @endphp
-        {{-- {{$product->child_cat_id}} --}}
-        <div class="form-group {{(($product->child_cat_id)? '' : 'd-none')}}" id="child_cat_div">
-          <label for="child_cat_id">Sub Category</label>
-          <select name="child_cat_id" id="child_cat_id" class="form-control">
-              <option value="">--Select any sub category--</option>
-              
-          </select>
-        </div>
+
 
         <div class="form-group">
           <label for="price" class="col-form-label">Price(NRS) <span class="text-danger">*</span></label>
@@ -81,8 +94,8 @@
           <label for="size">Size</label>
           <select name="size[]" class="form-control selectpicker"  multiple data-live-search="true">
               <option value="">--Select any size--</option>
-              @foreach($items as $item)              
-                @php 
+              @foreach($items as $item)
+                @php
                 $data=explode(',',$item->size);
                 // dd($data);
                 @endphp
@@ -135,7 +148,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">

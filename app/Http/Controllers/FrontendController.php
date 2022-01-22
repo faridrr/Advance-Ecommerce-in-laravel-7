@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 class FrontendController extends Controller
 {
-   
+
     public function index(Request $request){
         return redirect()->route($request->user()->role);
     }
@@ -38,7 +38,7 @@ class FrontendController extends Controller
                 ->with('banners',$banners)
                 ->with('product_lists',$products)
                 ->with('category_lists',$category);
-    }   
+    }
 
     public function aboutUs(){
         return view('frontend.pages.about-us');
@@ -56,7 +56,7 @@ class FrontendController extends Controller
 
     public function productGrids(){
         $products=Product::query();
-        
+
         if(!empty($_GET['category'])){
             $slug=explode(',',$_GET['category']);
             // dd($slug);
@@ -85,7 +85,7 @@ class FrontendController extends Controller
             // return $price;
             // if(isset($price[0]) && is_numeric($price[0])) $price[0]=floor(Helper::base_amount($price[0]));
             // if(isset($price[1]) && is_numeric($price[1])) $price[1]=ceil(Helper::base_amount($price[1]));
-            
+
             $products->whereBetween('price',$price);
         }
 
@@ -99,12 +99,12 @@ class FrontendController extends Controller
         }
         // Sort by name , price, category
 
-      
+
         return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products);
     }
     public function productLists(){
         $products=Product::query();
-        
+
         if(!empty($_GET['category'])){
             $slug=explode(',',$_GET['category']);
             // dd($slug);
@@ -133,7 +133,7 @@ class FrontendController extends Controller
             // return $price;
             // if(isset($price[0]) && is_numeric($price[0])) $price[0]=floor(Helper::base_amount($price[0]));
             // if(isset($price[1]) && is_numeric($price[1])) $price[1]=ceil(Helper::base_amount($price[1]));
-            
+
             $products->whereBetween('price',$price);
         }
 
@@ -147,7 +147,7 @@ class FrontendController extends Controller
         }
         // Sort by name , price, category
 
-      
+
         return view('frontend.pages.product-lists')->with('products',$products)->with('recent_products',$recent_products);
     }
     public function productFilter(Request $request){
@@ -223,35 +223,75 @@ class FrontendController extends Controller
 
     }
     public function productCat(Request $request){
-        $products=Category::getProductByCat($request->slug);
+
+        $cat = Category::where('slug',$request->slug)->first();
+        $subcat = Category::where('parent_id',$cat->id)->first();
+        $subcat2 = Category::where('parent_id',$subcat->id)->first();
+        $subcat3 = Category::where('parent_id',$subcat2->id)->first();
+
+        $products = Product::where('cat_id', $cat->id)->orwhere('cat_id', $subcat->id)->orwhere('cat_id', $subcat2->id)->orwhere('cat_id',$subcat3->id)->paginate(10);
+
         // return $request->slug;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
 
-        if(request()->is('e-shop.loc/product-grids')){
-            return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
-        }
-        else{
-            return view('frontend.pages.product-lists')->with('products',$products->products)->with('recent_products',$recent_products);
-        }
+            return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('cat' , $cat->id);
+
 
     }
     public function productSubCat(Request $request){
-        $products=Category::getProductBySubCat($request->sub_slug);
+
+        $subcat = Category::where('slug',$request->sub_slug)->first();
+        $subcat2 = Category::where('parent_id',$subcat->id)->first();
+        $subcat3 = Category::where('parent_id',$subcat2->id)->first();
+
+        $products = Product::where('cat_id', $subcat->id)->orwhere('cat_id', $subcat2->id)->orwhere('cat_id',$subcat3->id)->paginate(10);
+
         // return $products;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
 
-        if(request()->is('e-shop.loc/product-grids')){
-            return view('frontend.pages.product-grids')->with('products',$products->sub_products)->with('recent_products',$recent_products);
-        }
-        else{
-            return view('frontend.pages.product-lists')->with('products',$products->sub_products)->with('recent_products',$recent_products);
-        }
+        return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('cat', $subcat->parent_id)->with('subcat', $subcat->id);
+
+
+    }
+    public function productSubCat1(Request $request){
+
+        $subcat2 = Category::where('slug',$request->sub_slug1)->first();
+        $subcat3 = Category::where('parent_id',$subcat2->id)->first();
+
+        $subcat = Category::where('id',$subcat2->parent_id)->first();
+
+
+        $products = Product::where('cat_id', $subcat2->id)->orwhere('cat_id',$subcat3->id)->paginate(10);
+
+        // return $products;
+        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+
+        return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('cat', $subcat->parent_id)->with('subcat', $subcat->id)->with('subcat2',$subcat2->id );
+
+
+    }
+
+    public function productSubCat2(Request $request){
+
+        $subcat3 = Category::where('slug',$request->sub_slug2)->first();
+
+        $subcat2 = Category::where('id',$subcat3->parent_id)->first();
+        $subcat = Category::where('id',$subcat2->parent_id)->first();
+
+
+        $products = Product::where('cat_id',$subcat3->id)->paginate(10);
+
+        // return $products;
+        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+
+        return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('cat', $subcat->parent_id)->with('subcat', $subcat->id)->with('subcat2',$subcat2->id )->with('subcat3', $subcat3);
+
 
     }
 
     public function blog(){
         $post=Post::query();
-        
+
         if(!empty($_GET['category'])){
             $slug=explode(',',$_GET['category']);
             // dd($slug);
@@ -422,5 +462,5 @@ class FrontendController extends Controller
                 return back();
             }
     }
-    
+
 }

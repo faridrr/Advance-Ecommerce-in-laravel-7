@@ -1,25 +1,25 @@
 @extends('frontend.layouts.master')
 
-@section('title','E-SHOP || PRODUCT PAGE')
+@section('title','Michket || BOUTIQUE')
 
 @section('main-content')
-	
-		<!-- Breadcrumbs -->
-		<div class="breadcrumbs">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="bread-inner">
-							<ul class="bread-list">
-								<li><a href="{{route('home')}}">Home<i class="ti-arrow-right"></i></a></li>
-								<li class="active"><a href="javascript:void(0);">Shop List</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Breadcrumbs -->
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bread-inner">
+                        <ul class="bread-list">
+                            <li><a href="/">Accueil<i class="ti-arrow-right"></i></a></li>
+                            <li class="active"><a href="blog-single.html">Boutique</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
 		<form action="{{route('shop.filter')}}" method="POST">
 		@csrf
 			<!-- Product Style 1 -->
@@ -63,7 +63,7 @@
                                 <!--/ End Single Widget -->
                                 <!-- Shop By Price -->
 								<div class="single-widget range">
-									<h3 class="title">Shop by Price</h3>
+									<h3 class="title">Trier par Prix</h3>
 									<div class="price-filter">
 										<div class="price-filter-inner">
 											{{-- <div id="slider-range" data-min="10" data-max="2000" data-currency="%"></div>
@@ -79,9 +79,9 @@
 											@endphp
 											<div id="slider-range" data-min="0" data-max="{{$max}}"></div>
 											<div class="product_filter">
-											<button type="submit" class="filter_button">Filter</button>
+											<button type="submit" class="filter_button">Filtrer</button>
 											<div class="label-input">
-												<span>Range:</span>
+												<span>Intervalle:</span>
 												<input style="" type="text" id="amount" readonly/>
 												<input type="hidden" name="price_range" id="price_range" value="@if(!empty($_GET['price'])){{$_GET['price']}}@endif"/>
 											</div>
@@ -103,11 +103,11 @@
 								<!--/ End Shop By Price -->
                                 <!-- Single Widget -->
                                 <div class="single-widget recent-post">
-                                    <h3 class="title">Recent post</h3>
+                                    <h3 class="title">Produits récents:</h3>
                                     {{-- {{dd($recent_products)}} --}}
                                     @foreach($recent_products as $product)
                                         <!-- Single Post -->
-                                        @php 
+                                        @php
                                             $photo=explode(',',$product->photo);
                                         @endphp
                                         <div class="single-post first">
@@ -119,24 +119,11 @@
                                                 @php
                                                     $org=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <p class="price"><del class="text-muted">${{number_format($product->price,2)}}</del>   ${{number_format($org,2)}}  </p>                                                
+                                                <p class="price"><del class="text-muted">${{number_format($product->price,2)}}</del>   ${{number_format($org,2)}}  </p>
                                             </div>
                                         </div>
                                         <!-- End Single Post -->
                                     @endforeach
-                                </div>
-                                <!--/ End Single Widget -->
-                                <!-- Single Widget -->
-                                <div class="single-widget category">
-                                    <h3 class="title">Brands</h3>
-                                    <ul class="categor-list">
-                                        @php
-                                            $brands=DB::table('brands')->orderBy('title','ASC')->where('status','active')->get();
-                                        @endphp
-                                        @foreach($brands as $brand)
-                                            <li><a href="{{route('product-brand',$brand->slug)}}">{{$brand->title}}</a></li>
-                                        @endforeach
-                                    </ul>
                                 </div>
                                 <!--/ End Single Widget -->
                         	</div>
@@ -187,7 +174,7 @@
 													<div class="single-product">
 														<div class="product-img">
 															<a href="{{route('product-detail',$product->slug)}}">
-															@php 
+															@php
 																$photo=explode(',',$product->photo);
 															@endphp
 															<img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
@@ -239,7 +226,7 @@
 					</div>
 				</div>
 			</section>
-			<!--/ End Product Style 1  -->	
+			<!--/ End Product Style 1  -->
 		</form>
 		<!-- Modal -->
 		@if($products)
@@ -256,7 +243,7 @@
 											<!-- Product Slider -->
 												<div class="product-gallery">
 													<div class="quickview-slider-active">
-														@php 
+														@php
 															$photo=explode(',',$product->photo);
 														// dd($photo);
 														@endphp
@@ -287,7 +274,7 @@
 															@for($i=1; $i<=5; $i++)
 																@if($rate>=$i)
 																	<i class="yellow fa fa-star"></i>
-																@else 
+																@else
 																<i class="fa fa-star"></i>
 																@endif
 															@endfor
@@ -297,7 +284,7 @@
 													<div class="quickview-stock">
 														@if($product->stock >0)
 														<span><i class="fa fa-check-circle-o"></i> {{$product->stock}} in stock</span>
-														@else 
+														@else
 														<span><i class="fa fa-times-circle-o text-danger"></i> {{$product->stock}} out stock</span>
 														@endif
 													</div>
@@ -313,7 +300,7 @@
 													<div class="size">
 														<h4>Size</h4>
 														<ul>
-															@php 
+															@php
 																$sizes=explode(',',$product->size);
 																// dd($sizes);
 															@endphp
@@ -324,7 +311,7 @@
 													</div>
 												@endif
 												<form action="{{route('single-add-to-cart')}}" method="POST">
-													@csrf 
+													@csrf
 													<div class="quantity">
 														<!-- Input Order -->
 														<div class="input-group">
@@ -370,7 +357,7 @@
 	.filter_button{
         /* height:20px; */
         text-align: center;
-        background:#F7941D;
+        background:#fab615;
         padding:8px 16px;
         margin-top:10px;
         color: white;
@@ -405,7 +392,7 @@
 					else{
                         swal('error',response.msg,'error').then(function(){
 							// document.location.href=document.location.href;
-						}); 
+						});
                     }
                 }
             })
@@ -424,7 +411,7 @@
             if($("#price_range").length > 0 && $("#price_range").val()){
                 price_range = $("#price_range").val().trim();
             }
-            
+
             let price = price_range.split('-');
             $("#slider-range").slider({
                 range: true,
