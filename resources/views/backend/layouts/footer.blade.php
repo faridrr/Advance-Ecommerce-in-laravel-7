@@ -3,7 +3,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <a href="https://github.com/Prajwal100" target="_blank">PrajwalRai</a> 2020</span>
+            <span>Copyright &copy; Michket @php echo date('Y') @endphp</span>
           </div>
         </div>
       </footer>
@@ -51,7 +51,8 @@
 
   <!-- Page level plugins -->
   <script src="{{asset('backend/vendor/chart.js/Chart.min.js')}}"></script>
-
+      <!-- Latest compiled and minified JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
   <!-- Page level custom scripts -->
   {{-- <script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script> --}}
   {{-- <script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script> --}}
@@ -63,3 +64,6 @@
       $('.alert').slideUp();
     },4000);
   </script>
+      <script >
+          $('select').selectpicker();
+      </script>

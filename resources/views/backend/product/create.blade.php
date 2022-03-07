@@ -4,6 +4,9 @@
 
     <div class="card">
         <h5 class="card-header">Add Product</h5>
+        @if($errors->any())
+            {{ implode('', $errors->all('<div>:message</div>')) }}
+        @endif
         <div class="card-body">
             <form method="post" action="{{route('product.store')}}" enctype="multipart/form-data">
                 {{csrf_field()}}
@@ -75,6 +78,15 @@
                     <input id="price" type="number" name="price" placeholder="Enter price" value="{{old('price')}}"
                            class="form-control">
                     @error('price')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="price_customize" class="col-form-label">Customize Price</label>
+                    <input id="price_customize" type="number" name="price_customize" placeholder="Enter price" value="{{old('price_customize')}}"
+                           class="form-control">
+                    @error('price_customize')
                     <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
@@ -184,10 +196,13 @@
                     <label for="condition">Condition</label>
                     <select name="condition" class="form-control">
                         <option value="">--Select Condition--</option>
-                        <option value="default">Default</option>
+                        <option selected value="default">Default</option>
                         <option value="new">New</option>
                         <option value="hot">Hot</option>
                     </select>
+                    @error('condition')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
 
                 <div class="form-group">

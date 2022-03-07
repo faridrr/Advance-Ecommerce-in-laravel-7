@@ -97,7 +97,23 @@
                       <td>{{number_format($cart['price'],2)}} DZA</td>
                       <td>{{ $cart->quantity }}</td>
                       <td>{{$cart['amount']}} DZA</td>
-                      <td>{{ $cart->variation }} {{ $cart->taille }}</td>
+                      <td>
+                          @if( $cart->variation != null)
+                              {{ $cart->variation }}
+                              <br>
+                          @endif
+                          @if( $cart->taille != null)
+                              {{ $cart->taille }}
+                                  <br>
+                              @endif
+                          @if($cart->text != null || $cart->options != null)
+                              <strong class="badge-danger p-1">Personaliser</strong>
+                              <br>
+                              {{ $cart->text }}
+                              <br>
+                              {{ $cart->options }}
+                          @endif
+                      </td>
                   </tr>
               @endforeach
               </tbody>

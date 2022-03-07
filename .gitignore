@@ -8,3 +8,6 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+*.jpg
+public/orders/1646559823-file-5.pdf
+*.pdf

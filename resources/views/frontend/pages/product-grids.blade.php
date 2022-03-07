@@ -160,9 +160,13 @@
                                                 $org=($product->price-($product->price*$product->discount)/100);
                                             @endphp
                                             <p class="price">
+                                                @if($product->discount)
                                                 <del class="text-muted">{{number_format($product->price,2)}} DZA</del>
-                                                {{number_format($org,2)}} DZA</p>
-
+                                                {{number_format($org,2)}} DZA
+                                            @else
+                                                <span >{{number_format($product->price,2)}} DZA</span>
+                                            @endif
+                                            </p>
                                         </div>
                                     </div>
                                     <!-- End Single Post -->

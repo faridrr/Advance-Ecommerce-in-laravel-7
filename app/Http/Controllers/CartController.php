@@ -17,7 +17,6 @@ class CartController extends Controller
 
     public function addToCart(Request $request){
         // dd($request->all());
-
         $session = $request->session()->token();
 
 
@@ -50,6 +49,7 @@ class CartController extends Controller
             $cart->price = ($product->price-($product->price*$product->discount)/100);
             $cart->quantity = 1;
             $cart->amount=$cart->price*$cart->quantity;
+
             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
             $cart->save();
             $wishlist=Wishlist::where('user_id',$session)->where('cart_id',null)->update(['cart_id'=>$cart->id]);
@@ -63,6 +63,7 @@ class CartController extends Controller
             'slug'      =>  'required',
             'quant'      =>  'required',
         ]);
+
 
         $session = $request->session()->token();
 
@@ -80,7 +81,7 @@ class CartController extends Controller
 
         // return $already_cart;
 
-        if($already_cart && ($already_cart->variation == $request->variation)  && ($already_cart->taille == $request->taille)) {
+        if($already_cart && ($already_cart->variation == $request->variation)  && ($already_cart->taille == $request->taille) && ($request->customize != 'true')) {
             $already_cart->quantity = $already_cart->quantity + $request->quant[1];
             // $already_cart->price = ($product->price * $request->quant[1]) + $already_cart->price ;
             $already_cart->amount = ($product->price * $request->quant[1])+ $already_cart->amount;
@@ -92,9 +93,16 @@ class CartController extends Controller
         }else{
 
             $cart = new Cart;
+            if($request->customize == 'true'){
+                $cart->text = $request->text;
+                $cart->options = $request->options;
+                $cart->price = ($product->price_customize-($product->price_customize*$product->discount)/100);
+            }else{
+                $cart->price = ($product->price-($product->price*$product->discount)/100);
+            }
             $cart->user_id = $session;
             $cart->product_id = $product->id;
-            $cart->price = ($product->price-($product->price*$product->discount)/100);
+
             $cart->quantity = $request->quant[1];
             if($request->variation){
                 $cart->variation = $request->variation;
@@ -102,8 +110,7 @@ class CartController extends Controller
             if($request->taille){
                 $cart->taille = $request->taille;
             }
-            $price = ($product->price-(($product->price*$product->discount)/100));
-            $cart->amount=($price * $request->quant[1]);
+            $cart->amount=($cart->price * $request->quant[1]);
             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error',"le stock n'est pas suffisant !.");
             $cart->save();
         }
@@ -145,7 +152,7 @@ class CartController extends Controller
                     // return $cart;
 
                     if ($cart->product->stock <=0) continue;
-                    $after_price=($cart->product->price-($cart->product->price*$cart->product->discount)/100);
+                    $after_price=($cart->price-($cart->price*$cart->product->discount)/100);
                     $cart->amount = $after_price * $quant;
                     // return $cart->price;
                     $cart->save();

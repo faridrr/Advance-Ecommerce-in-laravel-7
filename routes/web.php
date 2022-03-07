@@ -60,6 +60,11 @@ Route::get('wishlist-delete/{id}','WishlistController@wishlistDelete')->name('wi
 Route::post('cart/order','OrderController@store')->name('cart.order');
 Route::get('order/pdf/{id}','OrderController@pdf')->name('order.pdf');
 Route::get('/income','OrderController@incomeChart')->name('product.order.income');
+Route::get('/income1','OrderController@incomeChart1')->name('product.order.income1');
+Route::get('/income2','OrderController@incomeChart2')->name('product.order.income2');
+Route::get('/incomeChartMonth/{month}','OrderController@incomeChartMonth')->name('product.order.incomeMonth');
+Route::get('/incomeChartMonth1/{month}','OrderController@incomeChartMonth1')->name('product.order.incomeMonth1');
+Route::get('/incomeChartMonth2/{month}','OrderController@incomeChartMonth2')->name('product.order.incomeMonth2');
 // Route::get('/user/chart','AdminController@userPieChart')->name('user.piechart');
 Route::get('/product-grids','FrontendController@productGrids')->name('product-grids');
 Route::get('/product-lists','FrontendController@productGrids')->name('product-lists');
@@ -97,7 +102,8 @@ Route::get('payment/success', 'PayPalController@success')->name('payment.success
 // Backend section start
 
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
-    Route::get('/','AdminController@index')->name('admin');
+    Route::get('/','AdminController@index');
+    Route::get('/home/{month?}','AdminController@index')->name('admin');
     Route::get('/file-manager',function(){
         return view('backend.layouts.file-manager');
     })->name('file-manager');
@@ -114,6 +120,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/category','CategoryController');
     // Product
     Route::resource('/product','ProductController');
+    Route::get('/products/stats','ProductController@stats')->name('product.stats');
+    Route::post('/products/stats','ProductController@search')->name('product.stats.search');
     // Ajax for sub category
     Route::post('/category/{id}/child','CategoryController@getChildByParent');
     // POST category
@@ -128,6 +136,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
     // Order
     Route::resource('/order','OrderController');
+    Route::post('/order','OrderController@search')->name('order.search');
+    Route::post('/storeAdmin','OrderController@storeAdmin')->name('order.storeAdmin');
     // Shipping
     Route::resource('/shipping','ShippingController');
     // Coupon

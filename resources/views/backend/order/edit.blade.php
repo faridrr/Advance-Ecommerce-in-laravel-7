@@ -13,17 +13,21 @@
         <label for="status">Status :</label>
         <select name="status" id="" class="form-control">
           <option value="">--Select Status--</option>
-          <option value="Commande" {{(($order->status=='Commande')? 'selected' : '')}}>Commande</option>
+          <option value="Prise de commande" {{(($order->status=='Prise de commande')? 'selected' : '')}}>Prise de commande</option>
           <option value="En Fabrication" {{(($order->status=='En Fabrication')? 'selected' : '')}}>En Fabrication</option>
-          <option value="Préparation + Livraison Alger" {{(($order->status=='Préparation + Livraison Alger')? 'selected' : '')}}>Préparation + Livraison Alger</option>
-          <option value="Préparation + Livraison Yalidine" {{(($order->status=='Préparation + Livraison Yalidine')? 'selected' : '')}}>Préparation + Livraison Yalidine</option>
+          <option value="Préparation Alger" {{(($order->status=='Préparation Alger')? 'selected' : '')}}>Préparation Alger</option>
+          <option value="Livraison Alger" {{(($order->status=='Livraison Alger')? 'selected' : '')}}>Livraison Alger</option>
+          <option value="Préparation Yalidine" {{(($order->status=='Préparation Yalidine')? 'selected' : '')}}>Préparation Yalidine</option>
+          <option value="Livraison Yalidine" {{(($order->status=='Livraison Yalidine')? 'selected' : '')}}>Livraison Yalidine</option>
           <option value="Livré" {{(($order->status=='Livré')? 'selected' : '')}}>Livré</option>
           <option value="Terminer" {{(($order->status=='Terminer')? 'selected' : '')}}>Terminer</option>
           <option value="Récup Magasin" {{(($order->status=='Récup Magasin')? 'selected' : '')}}>Récup Magasin</option>
           <option value="Annuler" {{(($order->status=='Annuler')? 'selected' : '')}}>Annuler</option>
           <option value="Échouer" {{(($order->status=='Échouer')? 'selected' : '')}}>Échouer</option>
           <option value="Erreur" {{(($order->status=='Erreur')? 'selected' : '')}}>Erreur</option>
+          <option value="Retour" {{(($order->status=='Retour')? 'selected' : '')}}>Retour</option>
         </select>
+
       </div>
       <button type="submit" class="btn btn-primary">Update</button>
     </form>

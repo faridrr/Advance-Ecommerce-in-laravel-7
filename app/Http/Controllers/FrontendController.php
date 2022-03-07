@@ -226,10 +226,16 @@ class FrontendController extends Controller
 
         $cat = Category::where('slug',$request->slug)->first();
         $subcat = Category::where('parent_id',$cat->id)->first();
-        $subcat2 = Category::where('parent_id',$subcat->id)->first();
-        $subcat3 = Category::where('parent_id',$subcat2->id)->first();
+        if(isset($subcat->id)){
+            $subcat2 = Category::where('parent_id',$subcat->id)->first();
+            if(isset($subcat2->id)){
+                $subcat3 = Category::where('parent_id',$subcat2->id)->first();
 
-        $products = Product::where('cat_id', $cat->id)->orwhere('cat_id', $subcat->id)->orwhere('cat_id', $subcat2->id)->orwhere('cat_id',$subcat3->id)->paginate(10);
+            }
+        }
+
+
+        $products = Product::where('cat_id', $cat->id)->orwhere('cat_id', (isset($subcat->id) ? $subcat->id : 0))->orwhere('cat_id', (isset($subcat2->id) ? $subcat2->id : 0))->orwhere('cat_id',(isset($subcat3->id) ? $subcat3->id : 0))->paginate(10);
 
         // return $request->slug;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
@@ -241,10 +247,16 @@ class FrontendController extends Controller
     public function productSubCat(Request $request){
 
         $subcat = Category::where('slug',$request->sub_slug)->first();
-        $subcat2 = Category::where('parent_id',$subcat->id)->first();
-        $subcat3 = Category::where('parent_id',$subcat2->id)->first();
+        if(isset($subcat->id)){
+            $subcat2 = Category::where('parent_id',$subcat->id)->first();
 
-        $products = Product::where('cat_id', $subcat->id)->orwhere('cat_id', $subcat2->id)->orwhere('cat_id',$subcat3->id)->paginate(10);
+            if(isset($subcat2->id)){
+                $subcat3 = Category::where('parent_id',$subcat2->id)->first();
+            }
+
+        }
+
+        $products = Product::where('cat_id', $subcat->id)->orwhere('cat_id', (isset($subcat2->id) ? $subcat2->id : 0))->orwhere('cat_id',(isset($subcat3->id) ? $subcat3->id : 0))->paginate(10);
 
         // return $products;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();

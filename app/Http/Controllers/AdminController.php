@@ -11,7 +11,11 @@ use Carbon\Carbon;
 use Spatie\Activitylog\Models\Activity;
 class AdminController extends Controller
 {
-    public function index(){
+    public function index($month = null){
+
+        $month = ($month != null) ?  $month : \Carbon\Carbon::now()->month;
+
+
         $data = User::select(\DB::raw("COUNT(*) as count"), \DB::raw("DAYNAME(created_at) as day_name"), \DB::raw("DAY(created_at) as day"))
         ->where('created_at', '>', Carbon::today()->subDay(6))
         ->groupBy('day_name','day')
@@ -23,7 +27,7 @@ class AdminController extends Controller
        $array[++$key] = [$value->day_name, $value->count];
      }
     //  return $data;
-     return view('backend.index')->with('users', json_encode($array));
+     return view('backend.index')->with('users', json_encode($array))->with('month', $month);
     }
 
     public function profile(){
@@ -86,9 +90,9 @@ class AdminController extends Controller
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-   
+
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-   
+
         return redirect()->route('admin')->with('success','Password successfully changed');
     }
 

@@ -65,6 +65,18 @@
                                                     <strong>Couleur</strong> : Jaune
                                                 @endif
                                             @endif
+                                            @if($cart->text != null)
+                                                <br>
+                                                <strong class="badge-danger p-1">Personaliser</strong>
+                                                <br>
+                                                Votre Texte : {{ $cart->text }}
+                                                @if(isset($cart->options))
+                                                    <br>
+                                                    Option supplementaires : {{ $cart->options }}
+                                                @endif
+                                            @endif
+
+
 
                                             @if(!is_null($cart->taille))
                                                 <br><br>

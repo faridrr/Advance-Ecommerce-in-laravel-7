@@ -70,9 +70,13 @@
                                     @php
                                         $after_discount=($product_detail->price-(($product_detail->price*$product_detail->discount)/100));
                                     @endphp
+                                    @if($product_detail->discount > 0)
                                     <p class="price"><span
                                             class="discount">{{number_format($after_discount,2)}} DZA</span><s>{{number_format($product_detail->price,2)}}
                                             DZA</s></p>
+                                    @else
+                                        <p class="price"><span class="discount" id="price">{{number_format($product_detail->price,2)}} DZA</span></p>
+                                    @endif
                                     <p class="description">{!!($product_detail->summary)!!}</p>
                                 </div>
                                 <!--/ End Description -->
@@ -112,7 +116,7 @@
 
 
                                                 @if(!empty($product_detail->var_blue))
-                                                    <div class='col-md-3'>
+                                                    <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_blue"
                                                                class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_blue">
                                                         <label for="var_blue">
@@ -126,7 +130,7 @@
                                                     </div>
                                                 @endif
                                                 @if(!empty($product_detail->var_red))
-                                                    <div class='col-md-3'>
+                                                    <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_red"
                                                                class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_red">
                                                         <label for="var_red">
@@ -140,7 +144,7 @@
                                                     </div>
                                                 @endif
                                                 @if(!empty($product_detail->var_white))
-                                                    <div class='col-md-3'>
+                                                    <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_white"
                                                                class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_white">
                                                         <label for="var_white">
@@ -154,7 +158,7 @@
                                                     </div>
                                                 @endif
                                                 @if(!empty($product_detail->var_pink))
-                                                    <div class='col-md-3'>
+                                                    <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_pink"
                                                                class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_pink">
                                                         <label for="var_pink">
@@ -168,7 +172,7 @@
                                                     </div>
                                                 @endif
                                                 @if(!empty($product_detail->var_green))
-                                                    <div class='col-md-3'>
+                                                    <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_green"
                                                                class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_green">
                                                         <label for="var_green">
@@ -182,7 +186,7 @@
                                                     </div>
                                                 @endif
                                                 @if(!empty($product_detail->var_orange))
-                                                    <div class='col-md-3'>
+                                                    <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_orange"
                                                                class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_orange">
                                                         <label for="var_orange">
@@ -196,7 +200,7 @@
                                                     </div>
                                                 @endif
                                                 @if(!empty($product_detail->var_yellow))
-                                                    <div class='col-md-3'>
+                                                    <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_yellow"
                                                                class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_yellow">
                                                         <label for="var_yellow">
@@ -234,19 +238,34 @@
                                             </div>
                                             <!--/ End Input Order -->
                                         </div>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group m-2 p-2">
+                                                        <input class="form-check-input " name="customize" type="checkbox" value="true" id="customize">
+                                                        <label class="form-check-label" for="customize">
+                                                            Voulez vous personnaliser le texte ?
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group" id="text_group" style="display: none">
+                                                        <label for="text">Saisissez votre texte :</label>
+                                                        <br>
+                                                        <input type="text" name="text" id="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group" id="option_group" style="display: none">
+                                                        <label for="option">Option supplementaire <span style="color: #727b84">(Police, Taille ...)</span></label>
+                                                        <br>
+                                                        <textarea name="options" id="option" cols="30" rows="2" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="add-to-cart mt-4">
                                             <button type="submit" class="btn">Commander</button>
                                         </div>
                                     </form>
 
-                                    <p class="cat">Catégorie :<a
-                                            href="{{route('product-cat',$product_detail->cat_info['slug'])}}">{{$product_detail->cat_info['title']}}</a>
-                                    </p>
-                                    @if($product_detail->sub_cat_info)
-                                        <p class="cat mt-1">Sub Category :<a
-                                                href="{{route('product-sub-cat',[$product_detail->cat_info['slug'],$product_detail->sub_cat_info['slug']])}}">{{$product_detail->sub_cat_info['title']}}</a>
-                                        </p>
-                                    @endif
+
                                     <p class="availability">Stock : @if($product_detail->stock>0)<span
                                             class="badge badge-success">{{$product_detail->stock}}</span>@else <span
                                             class="badge badge-danger">{{$product_detail->stock}}</span>  @endif</p>
@@ -505,7 +524,13 @@
 @endpush
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
+    @if($product_detail->discount > 0)
+        <p class="price" id="price_dis">
+            <span class="discount" >{{number_format($after_discount,2)}} DZA</span>
+            <s>{{number_format($product_detail->price,2)}}DZA</s></p>
+    @else
+        <p class="price"><span class="discount" id="price">{{number_format($product_detail->price,2)}} DZA</span></p>
+    @endif
     <script>
         $('input:radio').change(
             function () {
@@ -513,6 +538,37 @@
 
             }
         )
+
+        $(document).ready(function() {
+
+
+            $('#customize').change(function() {
+                if(this.checked) {
+                    $('#text_group').show()
+                    $('#option_group').show()
+
+                    if({{$product_detail->discount }} > 0){
+                        $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
+                            "            <s>{{number_format($product_detail->price_customize,2)}}DZA</s>");
+                    }else{
+                        $("#price").html("{{number_format($product_detail->price_customize,2)}} DZA");
+                    }
+
+                }else{
+                    $('#text_group').hide()
+                    $('#option_group').hide()
+
+                    if({{$product_detail->discount }} > 0){
+                        $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
+                            "            <s>{{number_format($product_detail->price,2)}}DZA</s>");
+                    }else{
+                        $("#price").html("{{number_format($product_detail->price,2)}} DZA");
+                    }
+                }
+            });
+        });
+
+
     </script>
     {{-- <script>
         $('.cart').click(function(){

@@ -114,20 +114,20 @@
 	<!--/ End Map Section -->
 
 	<!-- Start Shop Newsletter  -->
-	@include('frontend.layouts.newsletter')
+{{--	@include('frontend.layouts.newsletter')--}}
 	<!-- End Shop Newsletter -->
 	<!--================Contact Success  =================-->
 	<div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 		  <div class="modal-content">
 			<div class="modal-header">
-				<h2 class="text-success">Thank you!</h2>
+				<h2 class="text-success">Merci!</h2>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<p class="text-success">Your message is successfully sent...</p>
+				<p class="text-success">Votre message a bien été envoyé...</p>
 			</div>
 		  </div>
 		</div>
@@ -138,13 +138,13 @@
 		<div class="modal-dialog" role="document">
 		  <div class="modal-content">
 			<div class="modal-header">
-				<h2 class="text-warning">Sorry!</h2>
+				<h2 class="text-warning">Pardon!</h2>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<p class="text-warning">Something went wrong.</p>
+				<p class="text-warning">Quelque chose s'est mal passé.</p>
 			</div>
 		  </div>
 		</div>

@@ -1,5 +1,13 @@
 <!-- Meta Tag -->
 @yield('meta')
+<meta charset="UTF-8">
+@php
+$description = \App\Models\Settings::first();
+@endphp
+<meta name="description" content="Michket nouvelle start up 'jeune pousse' décrit une jeune entreprise de haute technologie qui présente un potentiel important de croissance">
+<meta name="keywords" content="Veilleuse 3D, Lampe, Nids de chat, Michket, Alger">
+<meta name="author" content="Michket">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Title Tag  -->
 <title>@yield('title')</title>
 <!-- Favicon -->
