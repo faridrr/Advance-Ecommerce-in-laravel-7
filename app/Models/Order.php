@@ -31,7 +31,6 @@ class Order extends Model
         'file_4',
         'file_5',
         'file_6',
-        'types',
         'pri_commande',
         'fabrication',
         'pre_alger',

@@ -19,6 +19,8 @@
           <option value="Livraison Alger" {{(($order->status=='Livraison Alger')? 'selected' : '')}}>Livraison Alger</option>
           <option value="Préparation Yalidine" {{(($order->status=='Préparation Yalidine')? 'selected' : '')}}>Préparation Yalidine</option>
           <option value="Livraison Yalidine" {{(($order->status=='Livraison Yalidine')? 'selected' : '')}}>Livraison Yalidine</option>
+            <option value="Vente Magasin" {{(($order->status=='Vente Magasin')? 'selected' : '')}}>Vente Magasin</option>
+            <option value="Finale Magasin" {{(($order->status=='Finale Magasin')? 'selected' : '')}}>Finale Magasin</option>
           <option value="Livré" {{(($order->status=='Livré')? 'selected' : '')}}>Livré</option>
           <option value="Terminer" {{(($order->status=='Terminer')? 'selected' : '')}}>Terminer</option>
           <option value="Récup Magasin" {{(($order->status=='Récup Magasin')? 'selected' : '')}}>Récup Magasin</option>

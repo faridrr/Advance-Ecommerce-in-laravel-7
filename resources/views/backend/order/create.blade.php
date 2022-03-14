@@ -93,13 +93,15 @@
                                 <option value="Livraison Alger" >Livraison Alger</option>
                                 <option value="Préparation Yalidine" >Préparation Yalidine</option>
                                 <option value="Livraison Yalidine" >Livraison Yalidine</option>
+                                <option value="Vente Magasin" >Vente Magasin</option>
+                                <option value="Finale Magasin" >Finale Magasin</option>
                                 <option value="Livré" >Livré</option>
                                 <option value="Terminer" >Terminer</option>
                                 <option value="Récup Magasin">Récup Magasin</option>
                                 <option value="Annuler" >Annuler</option>
                                 <option value="Échouer" >Échouer</option>
                                 <option value="Erreur" >Erreur</option>
-                                <option value="Retour" >Retour</option>S
+                                <option value="Retour" >Retour</option>
                             </select>
 
                         </div>
