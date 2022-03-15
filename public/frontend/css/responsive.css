@@ -7,6 +7,7 @@ Version:1.0
 ========================================*/
 /* Tablet Screen */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
+
 .section{
 	padding:50px 0px;
 }
@@ -123,7 +124,7 @@ Version:1.0
 	display:block;
 }
 .hero-slider {
-	height: 416px;
+	height: 0px;
 }
 .hero-slider .hero-text {
 	margin-top: 80px;
@@ -342,6 +343,13 @@ Version:1.0
 }
 /* Mobile Screen */
 @media only screen and (max-width: 767px) {
+
+#Gslider .carousel-inner {
+    height: unset!important;
+}
+    #Gslider .carousel-indicators {
+        display: none!important;
+    }
 .breadcrumbs {
 	padding: 90px 0 90px;
 }
@@ -526,7 +534,7 @@ Version:1.0
 	display:none
 }
 .hero-slider {
-	height: 350px;
+	height: 0px;
 }
 .hero-slider .hero-text {
 	margin-top: 60px;
@@ -1261,7 +1269,7 @@ Version:1.0
 	display:none !important;
 }
 .hero-slider {
-	height: 350px;
+	height: 0px;
 }
 .hero-slider .hero-text {
 	margin-top: 60px;

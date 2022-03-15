@@ -10803,9 +10803,10 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+  background: url("https://michket-dz.com/storage/photos/1/michket-logo.png");
   background-position: center;
-  background-size: cover;
+    background-size: 300px;
+    background-repeat: no-repeat;
 }
 
 .bg-register-image {
