@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Order;
+use App\Models\Shipping;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\Cart;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Helper;
 class CartController extends Controller
@@ -190,5 +193,41 @@ class CartController extends Controller
         //     $cart->save();
         // }
         return view('frontend.pages.checkout');
+    }
+
+    public function edit($id){
+        $products = Product::All();
+        $cart = Cart::findOrfail($id);
+        return view('backend.cart.edit',[
+            'products' => $products,
+            'cart' => $cart
+        ]);
+    }
+
+    public function update(Request $request, $id){
+        $cart = Cart::findOrFail($id);
+        $data = $request->all();
+        $data['amount'] = $request->price * $cart->quantity;
+        $status = $cart->fill($data)->save();
+
+        $order = Order::findOrFail($cart->order_id);
+
+        $total  = Cart::where('order_id', $order->id)
+          ->sum(DB::raw('carts.price * carts.quantity'));
+
+        $shipping = Shipping::findOrFail($order->shipping_id);
+
+        $order->sub_total = $total;
+        $order->total_amount = $total + $shipping->price;
+        $order->save();
+
+
+
+        if ($status) {
+            request()->session()->flash('success', 'Successfully updated order');
+        } else {
+            request()->session()->flash('error', 'Error while updating order');
+        }
+        return back();
     }
 }

@@ -35,6 +35,87 @@
     </form>
   </div>
 </div>
+<div class="card" style="margin: 20px!important;">
+    <h5 class="card-header">Order Edit</h5>
+    <div class="card-body">
+        <form method="POST" action="{{ route('order.updateData', $order->id) }}">
+            @csrf
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Prénom<span>*</span></label>
+                                <input class="form-control" type="text" name="first_name" placeholder=""
+                                        value="{{ $order->first_name }}" required>
+                                @error('first_name')
+                                <span class='text-danger'>{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Nom<span>*</span></label>
+                                <input class="form-control" type="text" name="last_name" placeholder="" value="{{ $order->last_name }}"
+                                       required>
+                                @error('last_name')
+                                <span class='text-danger'>{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Téléphone<span>*</span></label>
+                                <input class="form-control" type="number" name="phone" placeholder="" required
+                                       value="{{ $order->phone }}" required>
+                                @error('phone')
+                                <span class='text-danger'>{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 d-none">
+                            <div class="form-group">
+                                <label>Country<span>*</span></label>
+                                <select class="form-control" name="country" id="country">
+                                    <option @if($order->country == 'DZ') selected @endif  value="DZ">Algeria</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="form-group shipping">
+                                <label>Wilaya<span>*</span></label>
+                                <select class="form-control" required name="shipping_id" >
+                                    <option  disabled selected value hidden>Wilaya</option>
+                                    @foreach(Helper::shipping() as $shipping)
+                                        <option @if($order->shipping_id == $shipping->id) selected @endif  value="{{$shipping->id}}" class="shippingOption"
+                                                data-price="{{$shipping->price}}">{{$shipping->type}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Adresse<span>*</span></label>
+                                <input class="form-control" required type="text" name="address1" placeholder=""
+                                       value="{{ $order->address1 }}">
+                                @error('address1')
+                                <span class='text-danger'>{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 pt-4">
+                            <div class="form-group">
+                                <button class="form-control btn btn-success" type="submit">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 @endsection
 
 @push('styles')

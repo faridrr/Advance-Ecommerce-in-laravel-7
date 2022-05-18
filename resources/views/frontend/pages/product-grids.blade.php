@@ -11,7 +11,7 @@
                     <div class="bread-inner">
                         <ul class="bread-list">
                             <li><a href="/">Accueil<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="blog-single.html">Boutique</a></li>
+                            <li class="active"><a href="{{ route('product-grids') }}">Boutique</a></li>
                         </ul>
                     </div>
                 </div>

@@ -28,16 +28,16 @@ class FrontendController extends Controller
         $featured=Product::where('status','active')->where('is_featured',1)->orderBy('price','DESC')->limit(2)->get();
         $posts=Post::where('status','active')->orderBy('id','DESC')->limit(3)->get();
         $banners=Banner::where('status','active')->limit(3)->orderBy('id','DESC')->get();
-        // return $banner;Product::where('status','active')->orderBy('id','DESC')->limit(8)->get();
-        $products=
+        // return $banner;
+        $products=Product::where('status','active')->orderBy('id','DESC')->limit(8)->get();
         $category=Category::where('status','active')->where('is_parent',1)->orderBy('title','ASC')->get();
         // return $category;
         return view('frontend.index')
-                ->with('featured',$featured)
-                ->with('posts',$posts)
-                ->with('banners',$banners)
-                ->with('product_lists',$products)
-                ->with('category_lists',$category);
+            ->with('featured',$featured)
+            ->with('posts',$posts)
+            ->with('banners',$banners)
+            ->with('product_lists',$products)
+            ->with('category_lists',$category);
     }
 
     public function aboutUs(){
@@ -151,63 +151,63 @@ class FrontendController extends Controller
         return view('frontend.pages.product-lists')->with('products',$products)->with('recent_products',$recent_products);
     }
     public function productFilter(Request $request){
-            $data= $request->all();
-            // return $data;
-            $showURL="";
-            if(!empty($data['show'])){
-                $showURL .='&show='.$data['show'];
-            }
+        $data= $request->all();
+        // return $data;
+        $showURL="";
+        if(!empty($data['show'])){
+            $showURL .='&show='.$data['show'];
+        }
 
-            $sortByURL='';
-            if(!empty($data['sortBy'])){
-                $sortByURL .='&sortBy='.$data['sortBy'];
-            }
+        $sortByURL='';
+        if(!empty($data['sortBy'])){
+            $sortByURL .='&sortBy='.$data['sortBy'];
+        }
 
-            $catURL="";
-            if(!empty($data['category'])){
-                foreach($data['category'] as $category){
-                    if(empty($catURL)){
-                        $catURL .='&category='.$category;
-                    }
-                    else{
-                        $catURL .=','.$category;
-                    }
+        $catURL="";
+        if(!empty($data['category'])){
+            foreach($data['category'] as $category){
+                if(empty($catURL)){
+                    $catURL .='&category='.$category;
+                }
+                else{
+                    $catURL .=','.$category;
                 }
             }
+        }
 
-            $brandURL="";
-            if(!empty($data['brand'])){
-                foreach($data['brand'] as $brand){
-                    if(empty($brandURL)){
-                        $brandURL .='&brand='.$brand;
-                    }
-                    else{
-                        $brandURL .=','.$brand;
-                    }
+        $brandURL="";
+        if(!empty($data['brand'])){
+            foreach($data['brand'] as $brand){
+                if(empty($brandURL)){
+                    $brandURL .='&brand='.$brand;
+                }
+                else{
+                    $brandURL .=','.$brand;
                 }
             }
-            // return $brandURL;
+        }
+        // return $brandURL;
 
-            $priceRangeURL="";
-            if(!empty($data['price_range'])){
-                $priceRangeURL .='&price='.$data['price_range'];
-            }
-            if(request()->is('e-shop.loc/product-grids')){
-                return redirect()->route('product-grids',$catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
-            }
-            else{
-                return redirect()->route('product-lists',$catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
-            }
+        $priceRangeURL="";
+        if(!empty($data['price_range'])){
+            $priceRangeURL .='&price='.$data['price_range'];
+        }
+        if(request()->is('e-shop.loc/product-grids')){
+            return redirect()->route('product-grids',$catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
+        }
+        else{
+            return redirect()->route('product-lists',$catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
+        }
     }
     public function productSearch(Request $request){
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
         $products=Product::orwhere('title','like','%'.$request->search.'%')
-                    ->orwhere('slug','like','%'.$request->search.'%')
-                    ->orwhere('description','like','%'.$request->search.'%')
-                    ->orwhere('summary','like','%'.$request->search.'%')
-                    ->orwhere('price','like','%'.$request->search.'%')
-                    ->orderBy('id','DESC')
-                    ->paginate('9');
+            ->orwhere('slug','like','%'.$request->search.'%')
+            ->orwhere('description','like','%'.$request->search.'%')
+            ->orwhere('summary','like','%'.$request->search.'%')
+            ->orwhere('price','like','%'.$request->search.'%')
+            ->orderBy('id','DESC')
+            ->paginate('9');
         return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products);
     }
 
@@ -240,7 +240,7 @@ class FrontendController extends Controller
         // return $request->slug;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
 
-            return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('cat' , $cat->id);
+        return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products)->with('cat' , $cat->id);
 
 
     }
@@ -256,7 +256,7 @@ class FrontendController extends Controller
 
         }
 
-        $products = Product::where('cat_id', $subcat->id)->orwhere('cat_id', (isset($subcat2->id) ? $subcat2->id : 0))->orwhere('cat_id',(isset($subcat3->id) ? $subcat3->id : 0))->paginate(10);
+        $products = Product::where('cat_id', $subcat->id)->orwhere('cat_id', (isset($subcat2) ? $subcat2->id : 0))->orwhere('cat_id',(isset($subcat3) ? $subcat3->id : 0))->paginate(10);
 
         // return $products;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
@@ -273,7 +273,7 @@ class FrontendController extends Controller
         $subcat = Category::where('id',$subcat2->parent_id)->first();
 
 
-        $products = Product::where('cat_id', $subcat2->id)->orwhere('cat_id',$subcat3->id)->paginate(10);
+        $products = Product::where('cat_id', $subcat2->id)->orwhere('cat_id',isset($subcat3) ? $subcat3->id : 0)->paginate(10);
 
         // return $products;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
@@ -379,7 +379,7 @@ class FrontendController extends Controller
             }
         }
         // return $tagURL;
-            // return $catURL;
+        // return $catURL;
         return redirect()->route('blog',$catURL.$tagURL);
     }
 
@@ -450,7 +450,7 @@ class FrontendController extends Controller
             'email'=>$data['email'],
             'password'=>Hash::make($data['password']),
             'status'=>'active'
-            ]);
+        ]);
     }
     // Reset password
     public function showResetForm(){
@@ -459,20 +459,20 @@ class FrontendController extends Controller
 
     public function subscribe(Request $request){
         if(! Newsletter::isSubscribed($request->email)){
-                Newsletter::subscribePending($request->email);
-                if(Newsletter::lastActionSucceeded()){
-                    request()->session()->flash('success','Subscribed! Please check your email');
-                    return redirect()->route('home');
-                }
-                else{
-                    Newsletter::getLastError();
-                    return back()->with('error','Something went wrong! please try again');
-                }
+            Newsletter::subscribePending($request->email);
+            if(Newsletter::lastActionSucceeded()){
+                request()->session()->flash('success','Subscribed! Please check your email');
+                return redirect()->route('home');
             }
             else{
-                request()->session()->flash('error','Already Subscribed');
-                return back();
+                Newsletter::getLastError();
+                return back()->with('error','Something went wrong! please try again');
             }
+        }
+        else{
+            request()->session()->flash('error','Already Subscribed');
+            return back();
+        }
     }
 
 }

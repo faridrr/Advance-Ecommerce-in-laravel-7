@@ -158,7 +158,13 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     // Order
     Route::resource('/order','OrderController');
     Route::post('/order','OrderController@search')->name('order.search');
+    Route::post('/order/updateData/{id}','OrderController@updateData')->name('order.updateData');
     Route::post('/storeAdmin','OrderController@storeAdmin')->name('order.storeAdmin');
+
+    // Cart
+
+    Route::get('/cart/edit/{id}','CartController@edit')->name('cart.edit');
+    Route::post('/cart/update/{id}','CartController@update')->name('admin.cart.update');
     // Shipping
     Route::resource('/shipping','ShippingController');
     // Coupon

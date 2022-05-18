@@ -27,8 +27,15 @@ class OrderController extends Controller
     public function index()
     {
         $status = null;
+        $selected = null;
         $orders = Order::orderBy('updated_at', 'desc')->get();
-        return view('backend.order.index')->with('orders', $orders)->with('status', $status);
+        $products = Product::All();
+
+        return view('backend.order.index')
+            ->with('orders', $orders)
+            ->with('status', $status)
+            ->with('selected', $selected)
+            ->with('products', $products);
     }
 
     /**
@@ -38,9 +45,10 @@ class OrderController extends Controller
      */
     public function search(Request $request)
     {
-
-
-        $orders = Order::query();
+        $items = [];
+        $products = Product::All();
+        $selected = $request->selected;
+        $orders = Order::with('cart');
         if ($request->start_at) {
             $orders = $orders->where('created_at', '>=', $request->start_at);
         }
@@ -50,8 +58,29 @@ class OrderController extends Controller
         if ($request->status) {
             $orders = $orders->where('status', $request->status);
         }
-        $orders = $orders->get();
-        return view('backend.order.index')->with('orders', $orders)->with('status', $request->status)->with('start_at', $request->start_at)->with('end_at', $request->end_at);
+         $orders = $orders->get();
+        if ($selected) {
+            foreach ($orders as $order){
+                foreach ($order->cart as $cart){
+                    if($cart->product_id == $request->selected){
+                        $items[] = $order;
+                        break;
+                    }
+                }
+            }
+        }else{
+            $items = $orders;
+        }
+
+
+        return view('backend.order.index')
+            ->with('orders', $items)
+            ->with('status', $request->status)
+            ->with('start_at', $request->start_at)
+            ->with('end_at', $request->end_at)
+            ->with('selected', $selected)
+            ->with('products', $products);
+
     }
 
     /**
@@ -99,7 +128,7 @@ class OrderController extends Controller
         $order_data['quantity'] = 1;
 
         if ($request->shipping) {
-            $order_data['total_amount'] = $request->price + $shipping[0];
+            $order_data['total_amount'] = $request->price + $shipping;
         } else {
             $order_data['total_amount'] = $request->price;
         }
@@ -286,7 +315,10 @@ class OrderController extends Controller
     function edit($id)
     {
         $order = Order::find($id);
-        return view('backend.order.edit')->with('order', $order);
+        $products = Product::where('status', 'active')->orderBy('id', 'DESC')->get();
+        return view('backend.order.edit')
+            ->with('order', $order)
+            ->with('products', $products);
     }
 
     /**
@@ -393,8 +425,7 @@ class OrderController extends Controller
         return view('frontend.pages.order-track');
     }
 
-    public
-    function productTrackOrder(Request $request)
+    public function productTrackOrder(Request $request)
     {
         // return $request->all();
         $order = Order::where('user_id', auth()->user()->id)->where('order_number', $request->order_number)->first();
@@ -423,8 +454,7 @@ class OrderController extends Controller
     }
 
     // PDF generate
-    public
-    function pdf(Request $request)
+    public function pdf(Request $request)
     {
         $order = Order::getAllOrder($request->id);
         // return $order;
@@ -435,8 +465,7 @@ class OrderController extends Controller
     }
 
     // Income chart
-    public
-    function incomeChart(Request $request)
+    public function incomeChart(Request $request)
     {
         $year = \Carbon\Carbon::now()->year;
         // dd($year);
@@ -467,8 +496,7 @@ class OrderController extends Controller
         return $data;
     }
 
-    public
-    function incomeChart1(Request $request)
+    public function incomeChart1(Request $request)
     {
         $year = \Carbon\Carbon::now()->year;
         // dd($year);
@@ -523,8 +551,7 @@ class OrderController extends Controller
         return $data;
     }
 
-    public
-    function incomeChart3(Request $request)
+    public function incomeChart3(Request $request)
     {
         $year = \Carbon\Carbon::now()->year;
         // dd($year);
@@ -1079,5 +1106,20 @@ class OrderController extends Controller
             $data['     ' . $monthName] = (!empty($result[$i])) ? $result[$i] : 0.0;
         }
         return $data;
+    }
+
+    public function updateData(Request $request, $id){
+
+
+        $order = Order::find($id);
+        $data = $request->all();
+        $status = $order->fill($data)->save();
+
+        if ($status) {
+            request()->session()->flash('success', 'Successfully updated order');
+        } else {
+            request()->session()->flash('error', 'Error while updating order');
+        }
+        return redirect()->route('order.index');
     }
 }

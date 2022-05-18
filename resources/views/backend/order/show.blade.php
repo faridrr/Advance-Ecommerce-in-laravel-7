@@ -75,7 +75,7 @@
 
 
                 @php
-                    $carts = \App\Models\Cart::where('user_id',$order->user_id)->where('order_id' , $order->id)->get();
+                    $carts = \App\Models\Cart::where('order_id' , $order->id)->get();
                 @endphp
 
                 <table class="table table-striped table-hover">
@@ -101,7 +101,7 @@
                             <td>{{ $cart->product->title }}</td>
                             <td>{{number_format($cart['price'],2)}} DZA</td>
                             <td>{{ $cart->quantity }}</td>
-                            <td>{{$cart['amount']}} DZA</td>
+                            <td>{{number_format($cart->amount ,2)  }} DZA</td>
                             <td>
                                 @if( $cart->variation != null)
                                     {{ $cart->variation }}
@@ -119,6 +119,7 @@
                                     {{ $cart->options }}
                                 @endif
                             </td>
+                            <td><a href="{{ route('cart.edit', ['id' => $cart->id]) }}"><i class="fa fa-edit"></i></a></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -161,7 +162,7 @@
                                         </tr>
                                         <tr>
                                             <td>Total Amount</td>
-                                            <td> : {{number_format($order->total_amount,2)}} DZD</td>
+                                            <td> : {{number_format($order->total_amount,2)  }} DZD</td>
                                         </tr>
                                         <tr>
                                             <td>Payment Method</td>

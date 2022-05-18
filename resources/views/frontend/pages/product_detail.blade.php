@@ -13,6 +13,12 @@
     <meta property="og:title" content="{{$product_detail->title}}">
     <meta property="og:image" content="{{$product_detail->photo}}">
     <meta property="og:description" content="{{$product_detail->description}}">
+
+    <style>
+        .shop .nice-select {
+            width: 100% !important;
+        }
+    </style>
 @endsection
 @section('title','Michket || DÉTAILS DU PRODUIT')
 @section('main-content')
@@ -25,7 +31,7 @@
                     <div class="bread-inner">
                         <ul class="bread-list">
                             <li><a href="/">Accueil<i class="ti-arrow-right"></i></a></li>
-                            <li class="active"><a href="blog-single.html">Boutique</a></li>
+                            <li class="active"><a href="{{ route('product-grids') }}">Boutique</a></li>
                         </ul>
                     </div>
                 </div>
@@ -71,20 +77,19 @@
                                         $after_discount=($product_detail->price-(($product_detail->price*$product_detail->discount)/100));
                                     @endphp
                                     @if($product_detail->discount > 0)
-                                    <p class="price"><span
-                                            class="discount">{{number_format($after_discount,2)}} DZA</span><s>{{number_format($product_detail->price,2)}}
-                                            DZA</s></p>
+                                        <p class="price"><span
+                                                class="discount">{{number_format($after_discount,2)}} DZA</span><s>{{number_format($product_detail->price,2)}}
+                                                DZA</s></p>
                                     @else
-                                        <p class="price"><span class="discount" id="price">{{number_format($product_detail->price,2)}} DZA</span></p>
+                                        <p class="price"><span class="discount" id="price">{{number_format($product_detail->price,2)}} DZA</span>
+                                        </p>
                                     @endif
                                     <p class="description">{!!($product_detail->summary)!!}</p>
                                 </div>
                                 <!--/ End Description -->
 
 
-
-
-                            <!--/ End Size -->
+                                <!--/ End Size -->
                                 <!-- Product Buy -->
                                 <div class="product-buy">
                                     <form action="{{route('single-add-to-cart')}}" method="POST">
@@ -93,8 +98,8 @@
                                         <div class="container">
                                             <div class="row">
                                                 @if($product_detail->size)
-                                                <div class='col-md-4'>
-                                                    <!-- Size -->
+                                                    <div class='col-md-4'>
+                                                        <!-- Size -->
                                                         <div class="size mt-4">
                                                             <h4>Taille</h4>
                                                             <ul>
@@ -104,24 +109,30 @@
 
                                                                 @foreach($sizes as $key => $size)
                                                                     <div class="form-check form-check-inline">
-                                                                        <input required class="form-check-input" type="radio" name="taille" id="inlineRadio{{ $key }}" value="{{$size}}">
-                                                                        <label  class="form-check-label" for="inlineRadio{{ $key }}">{{$size}}</label>
+                                                                        <input required class="form-check-input"
+                                                                               type="radio" name="taille"
+                                                                               id="inlineRadio{{ $key }}"
+                                                                               value="{{$size}}">
+                                                                        <label class="form-check-label"
+                                                                               for="inlineRadio{{ $key }}">{{$size}}</label>
                                                                     </div> <br>
 
                                                                 @endforeach
                                                             </ul>
                                                         </div>
-                                                </div>
+                                                    </div>
                                                 @endif
 
 
                                                 @if(!empty($product_detail->var_blue))
                                                     <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_blue"
-                                                               class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_blue">
+                                                               class="imgbgchk"
+                                                               style="opacity: 0; margin: -9px; ; height: 1em;"
+                                                               value="var_blue">
                                                         <label for="var_blue">
                                                             <img
-                                                                src="{{ asset('variations') . '/' .  $product_detail->var_blue }}"
+                                                                src="{{ asset('michket/public/variations') . '/' .  $product_detail->var_blue }}"
                                                                 alt="Image 1" id="var_blue-img">
                                                             <div class="tick_container">
                                                                 <div class="tick"><i class="fa fa-check"></i></div>
@@ -132,10 +143,12 @@
                                                 @if(!empty($product_detail->var_red))
                                                     <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_red"
-                                                               class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_red">
+                                                               class="imgbgchk"
+                                                               style="opacity: 0; margin: -9px; ; height: 1em;"
+                                                               value="var_red">
                                                         <label for="var_red">
                                                             <img
-                                                                src="{{ asset('variations') . '/' .  $product_detail->var_red }}"
+                                                                src="{{ asset('michket/public/variations') . '/' .  $product_detail->var_red }}"
                                                                 alt="Image 2" id="var_red-img">
                                                             <div class="tick_container">
                                                                 <div class="tick"><i class="fa fa-check"></i></div>
@@ -146,10 +159,12 @@
                                                 @if(!empty($product_detail->var_white))
                                                     <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_white"
-                                                               class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_white">
+                                                               class="imgbgchk"
+                                                               style="opacity: 0; margin: -9px; ; height: 1em;"
+                                                               value="var_white">
                                                         <label for="var_white">
                                                             <img
-                                                                src="{{ asset('variations') . '/' .  $product_detail->var_white }}"
+                                                                src="{{ asset('michket/public/variations') . '/' .  $product_detail->var_white }}"
                                                                 alt="Image 3" id="var_white-img">
                                                             <div class="tick_container">
                                                                 <div class="tick"><i class="fa fa-check"></i></div>
@@ -160,10 +175,12 @@
                                                 @if(!empty($product_detail->var_pink))
                                                     <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_pink"
-                                                               class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_pink">
+                                                               class="imgbgchk"
+                                                               style="opacity: 0; margin: -9px; ; height: 1em;"
+                                                               value="var_pink">
                                                         <label for="var_pink">
                                                             <img
-                                                                src="{{ asset('variations') . '/' .  $product_detail->var_pink }}"
+                                                                src="{{ asset('michket/public/variations') . '/' .  $product_detail->var_pink }}"
                                                                 alt="Image 3" id="var_pink-img">
                                                             <div class="tick_container">
                                                                 <div class="tick"><i class="fa fa-check"></i></div>
@@ -174,10 +191,12 @@
                                                 @if(!empty($product_detail->var_green))
                                                     <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_green"
-                                                               class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_green">
+                                                               class="imgbgchk"
+                                                               style="opacity: 0; margin: -9px; ; height: 1em;"
+                                                               value="var_green">
                                                         <label for="var_green">
                                                             <img
-                                                                src="{{ asset('variations') . '/' .  $product_detail->var_green }}"
+                                                                src="{{ asset('michket/public/variations') . '/' .  $product_detail->var_green }}"
                                                                 alt="Image 3" id="var_green-img">
                                                             <div class="tick_container">
                                                                 <div class="tick"><i class="fa fa-check"></i></div>
@@ -188,10 +207,12 @@
                                                 @if(!empty($product_detail->var_orange))
                                                     <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_orange"
-                                                               class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_orange">
+                                                               class="imgbgchk"
+                                                               style="opacity: 0; margin: -9px; ; height: 1em;"
+                                                               value="var_orange">
                                                         <label for="var_orange">
                                                             <img
-                                                                src="{{ asset('variations') . '/' .  $product_detail->var_orange }}"
+                                                                src="{{ asset('michket/public/variations') . '/' .  $product_detail->var_orange }}"
                                                                 alt="Image 3" id="var_orange-img">
                                                             <div class="tick_container">
                                                                 <div class="tick"><i class="fa fa-check"></i></div>
@@ -202,10 +223,12 @@
                                                 @if(!empty($product_detail->var_yellow))
                                                     <div class='col-md-3 col-sm-6'>
                                                         <input type="radio" name="variation" required id="var_yellow"
-                                                               class="imgbgchk" style="opacity: 0; margin: -9px; ; height: 1em;" value="var_yellow">
+                                                               class="imgbgchk"
+                                                               style="opacity: 0; margin: -9px; ; height: 1em;"
+                                                               value="var_yellow">
                                                         <label for="var_yellow">
                                                             <img
-                                                                src="{{ asset('variations') . '/' .  $product_detail->var_yellow }}"
+                                                                src="{{ asset('michket/public/variations') . '/' .  $product_detail->var_yellow }}"
                                                                 alt="Image 3" id="var_yellow-img">
                                                             <div class="tick_container">
                                                                 <div class="tick"><i class="fa fa-check"></i></div>
@@ -238,28 +261,46 @@
                                             </div>
                                             <!--/ End Input Order -->
                                         </div>
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="form-group m-2 p-2">
-                                                        <input class="form-check-input " name="customize" type="checkbox" value="true" id="customize">
-                                                        <label class="form-check-label" for="customize">
-                                                            Voulez vous personnaliser le texte ?
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-group" id="text_group" style="display: none">
-                                                        <label for="text">Saisissez votre texte :</label>
-                                                        <br>
-                                                        <input type="text" name="text" id="text" class="form-control">
-                                                    </div>
-                                                    <div class="form-group" id="option_group" style="display: none">
-                                                        <label for="option">Option supplementaire <span style="color: #727b84">(Police, Taille ...)</span></label>
-                                                        <br>
-                                                        <textarea name="options" id="option" cols="30" rows="2" class="form-control"></textarea>
+
+                                        @if(isset($product_detail->price_customize))
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group m-2 p-2">
+                                                            <input class="form-check-input " name="customize"
+                                                                   type="checkbox" value="true" id="customize">
+                                                            <label class="form-check-label" for="customize">
+                                                                Voulez vous personnaliser le texte ?
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-group" id="type_group" style="display: none">
+                                                            <label for="type_group">Choisissez le type de
+                                                                personnalisation :</label>
+                                                            <select name="type" id="type" class="form-control">
+                                                                <option value="logo">Logo</option>
+                                                                <option value="personalized">Personalisé</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group" id="text_group" style="display: none">
+                                                            <label for="text">Saisissez votre texte :</label>
+                                                            <br>
+                                                            <input type="text" name="text" id="text"
+                                                                   class="form-control">
+                                                        </div>
+                                                        <div class="form-group" id="option_group" style="display: none">
+                                                            <label for="option">Option supplementaire <span
+                                                                    style="color: #727b84">(Police, Taille ...)</span></label>
+                                                            <br>
+                                                            <textarea name="options" id="option" cols="30" rows="2"
+                                                                      class="form-control"></textarea>
+                                                        </div>
+                                                        <div class="form-group" id="file_group" style="display: none">
+                                                            <input type="file" name="personalized_file">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="add-to-cart mt-4">
                                             <button type="submit" class="btn">Commander</button>
                                         </div>
@@ -526,50 +567,95 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     @if($product_detail->discount > 0)
         <p class="price" id="price_dis">
-            <span class="discount" >{{number_format($after_discount,2)}} DZA</span>
+            <span class="discount">{{number_format($after_discount,2)}} DZA</span>
             <s>{{number_format($product_detail->price,2)}}DZA</s></p>
     @else
         <p class="price"><span class="discount" id="price">{{number_format($product_detail->price,2)}} DZA</span></p>
     @endif
-    <script>
-        $('input:radio').change(
-            function () {
-                $('#image0').attr('src', $('#' + $(this).first().attr('id') + '-img').prop('src'));
+    @if(isset($product_detail->price_customize))
+        <script>
+            $('input:radio').change(
+                function () {
+                    $('#image0').attr('src', $('#' + $(this).first().attr('id') + '-img').prop('src'));
 
-            }
-        )
-
-        $(document).ready(function() {
-
-
-            $('#customize').change(function() {
-                if(this.checked) {
-                    $('#text_group').show()
-                    $('#option_group').show()
-
-                    if({{$product_detail->discount }} > 0){
-                        $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
-                            "            <s>{{number_format($product_detail->price_customize,2)}}DZA</s>");
-                    }else{
-                        $("#price").html("{{number_format($product_detail->price_customize,2)}} DZA");
-                    }
-
-                }else{
-                    $('#text_group').hide()
-                    $('#option_group').hide()
-
-                    if({{$product_detail->discount }} > 0){
-                        $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
-                            "            <s>{{number_format($product_detail->price,2)}}DZA</s>");
-                    }else{
-                        $("#price").html("{{number_format($product_detail->price,2)}} DZA");
-                    }
                 }
+            )
+
+            $(document).ready(function () {
+                $('#customize').change(function () {
+                    if (this.checked) {
+                        $('#text_group').show()
+                        $('#option_group').show()
+                        $('#type_group').show()
+                        $('#file_group').show()
+
+                        if ({{$product_detail->discount }} > 0)
+                        {
+                            $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
+                                "            <s>{{number_format($product_detail->price_logo,2)}}DZA</s>");
+                        }
+                    else
+                        {
+                            $("#price").html("{{number_format($product_detail->price_logo,2)}} DZA");
+                        }
+
+                    } else {
+                        $('#text_group').hide()
+                        $('#option_group').hide()
+                        $('#type_group').hide()
+                        $('#file_group').hide()
+
+                        if ({{$product_detail->discount }} >
+                        0
+                    )
+                        {
+                            $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
+                                "            <s>{{number_format($product_detail->price,2)}}DZA</s>");
+                        }
+                    else
+                        {
+                            $("#price").html("{{number_format($product_detail->price,2)}} DZA");
+                        }
+                    }
+                });
+
+                $('#type').change(function () {
+                    if ($('#customize').is(":checked")) {
+
+                        if (this.value == 'personalized') {
+                            if ({{$product_detail->discount }} > 0 )
+                            {
+                                $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
+                                    "            <s>{{number_format($product_detail->price_customize,2)}}DZA</s>");
+                            }
+                        else
+                            {
+                                $("#price").html("{{number_format($product_detail->price_customize,2)}} DZA");
+                            }
+                        } else {
+                            if ({{$product_detail->discount }} >
+                            0
+                        )
+                            {
+                                $("#price_dis").html("<span class=\"discount\" >{{number_format($after_discount,2)}} DZA</span>\n" +
+                                    "            <s>{{number_format($product_detail->price_logo,2)}}DZA</s>");
+                            }
+                        else
+                            {
+                                $("#price").html("{{number_format($product_detail->price_logo,2)}} DZA");
+                            }
+
+                        }
+
+                    }
+                });
+
+
             });
-        });
 
 
-    </script>
+        </script>
+    @endif
     {{-- <script>
         $('.cart').click(function(){
             var quantity=$('#quantity').val();

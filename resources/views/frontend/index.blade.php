@@ -257,14 +257,13 @@
                                                     $photo=explode(',',$product->photo);
                                                     // dd($photo);
                                                 @endphp
-                                                <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                                <a href="{{route('product-detail',$product->slug)}}" class="buy"><i
-                                                        class="fa fa-shopping-bag"></i></a>
+
+                                                <a href="{{route('product-detail',$product->slug)}}" ><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></a>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-12 no-padding">
                                             <div class="content">
-                                                <h4 class="title"><a href="#">{{$product->title}}</a></h4>
+                                                <h4 class="title"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h4>
                                                 @php
                                                     $after_discount=($product->price-(($product->price*$product->discount)/100));
                                                 @endphp

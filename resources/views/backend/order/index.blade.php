@@ -42,6 +42,18 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <select name="selected">
+                            <option value="">--Select Product--</option>
+
+                            @foreach($products as $product)
+                                <option value="{{ $product->id }}" {{(( $selected == $product->id) ? 'selected' : '')}}>{{ $product->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-2">
                     <button class="btn btn-success" type="submit">Rechercher</button>
                 </div>
