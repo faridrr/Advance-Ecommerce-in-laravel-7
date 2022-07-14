@@ -87,7 +87,8 @@ Route::get('/incomeChartMonthPersonalized3/{month}','OrderController@incomeChart
 
 
 // Route::get('/user/chart','AdminController@userPieChart')->name('user.piechart');
-Route::get('/product-grids','FrontendController@productGrids')->name('product-grids');
+Route::get('/product-grids/{category?}','FrontendController@productGrids')->name('product-grids');
+Route::post('/product-grids/{category?}','FrontendController@productGrids')->name('product-grids-filter');
 Route::get('/product-lists','FrontendController@productGrids')->name('product-lists');
 Route::match(['get','post'],'/filter','FrontendController@productFilter')->name('shop.filter');
 // Order Track
